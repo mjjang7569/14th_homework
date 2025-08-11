@@ -70,16 +70,20 @@
     flex-direction: column;
     gap:16px;
     justify-content: space-between;
+    
+
 }
 .카드:hover{
     filter :blur(1.5px);
     animation-name: 효과;
     animation-duration: 0.5s;
+    
 
 }
 @keyframes 효과 {
     to {
-        transform : blur(5px)
+        transform : scale(1.1, 1.1)
+         
     }
 }
 .카드이미지{

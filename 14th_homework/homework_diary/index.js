@@ -1,13 +1,7 @@
 let i = 0
 let 카드 = document.getElementById("카드영역")
 let 일기카드배열 = []
-let 단일카드 = {
-    기분 : "",
-    제목 : "",
-    내용 : ""
-}
-
-
+let 단일카드
 
 
 const 일기카드목록 = () =>{
@@ -44,9 +38,26 @@ const 일기카드목록 = () =>{
     일기카드배열.push(단일카드)
     let 카드저장 = localStorage.setItem("일기카드들", JSON.stringify(일기카드배열))
     let 카드내용 = JSON.parse(localStorage.getItem("일기카드들"))
-
     console.log("로컬저장후 불러옴", 카드내용, typeof(카드내용))
-
+    // 카드.innerHTML = 카드배열.map((ele, index)=>{
+    //     `       <a href="./detial.html?number=${i}">
+    //             <div id="카드${i}" class="카드">
+    //                     <div id="카드이미지${i}" class="카드이미지"></div>
+    //                     <div id="" class="카드내용요약">
+    //                         <div class="첫줄">
+    //                             <div class="기분노출">
+    //                                 <div>${ele.기분}</div>
+    //                             </div>
+    //                             <div class="날짜노출">'00.00.00'</div>
+    //                         </div>
+    //                         <div class="내용요약">
+    //                             <div>${ele.내용}</div>
+    //                         </div>                     
+    //                 </div>
+    //                 </div>
+    //             </a>
+    // `
+    // })
     카드.innerHTML = 카드.innerHTML +
 
     `       <a href="./detial.html?number=${i}">
