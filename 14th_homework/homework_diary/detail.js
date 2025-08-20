@@ -1,7 +1,7 @@
 const 쿼드스트링 = location.search
 const 잘게나누어담은통 = new URLSearchParams(쿼드스트링)
 const 카드인덱스 = 잘게나누어담은통.get('number')     
-let 카드내용 = JSON.parse(localStorage.getItem("일기카드들"))     
+let 카드내용 = JSON.parse(localStorage.getItem("일기카드들")) ||[]    
 
 const 기분가져오는기능= ()=>{
     const 일기상세의기분 = 카드내용[카드인덱스].기분
@@ -61,17 +61,24 @@ const 회고입력기능 = () =>{
     const 회고날짜 = `[${year}.${month}.${day}]`
 
     회고객체 ={
-        "회고내용" : 최종회고내용,
-        "회고날짜" : 회고날짜,
+        회고내용 : 최종회고내용,
+        회고날짜 : 회고날짜,
     }
-    const 회고내용날짜배열 = JSON.parse(localStorage.getItem("회고록")) || []
-    회고내용날짜배열.push(회고객체)
-    console.log("!!!!!!!1", 회고내용날짜배열)
-    localStorage.setItem("회고록",JSON.stringify(회고내용날짜배열))
-    document.getElementById("회고노출영역").innerHTML = 회고내용날짜배열.map((ele, index)=>`
+    // 카드내용[카드인덱스]["회고내용"] = 최종회고내용
+    // 카드내용[카드인덱스]["회고날짜"] = 회고날짜
+    // console.log("1111",카드내용[카드인덱스])
+    let 회고배열 = 카드내용[카드인덱스]["회고록"]||[]
+    // console.log("222222", 회고배열)
+    회고배열.push(회고객체)
+    카드내용[카드인덱스]["회고록"] = 회고배열
+    console.log("!!!!!!!1", 카드내용[카드인덱스])
+    localStorage.setItem("일기카드들",JSON.stringify(카드내용))
+    // const 회고내용날짜배열 = JSON.parse(localStorage.getItem("일기카드들")) || []
+    document.getElementById("회고노출영역").innerHTML = 회고배열.map((ele, index)=>`
     <div id="회고내용">${ele.회고내용}</div>
     <div id="회고등록날짜">${ele.회고날짜}</div> 
     `).join("")
+    document.getElementById("회고입력인풋").value = ""
 }
 
 const 내용복사기능 = () =>{
@@ -114,9 +121,7 @@ const 일기상세수정기능 = () =>{
 }
 
 const 수정완료기능 = () =>{
-    // document.getElementById("제목").innerText = 카드내용[카드인덱스].제목
-    // document.getElementById("내용").innerText = 카드내용[카드인덱스].내용
-    // document.getElementById("날짜").innerText= 카드내용[카드인덱스].날짜    
+  
     const radioButtons = document.getElementsByName("기분");
     const 선택된기분 = Array.from(radioButtons).filter(ele => ele.checked);    
     console.log("된", 선택된기분[0].id)
@@ -130,7 +135,7 @@ const 수정완료기능 = () =>{
     카드내용[카드인덱스].제목 = 수정된제목
     카드내용[카드인덱스].내용 = 수정된내용
     localStorage.setItem("일기카드들", JSON.stringify(카드내용))
-
+    history.back()
 
 }
 const 수정취소기능 = () =>{
@@ -165,13 +170,13 @@ const 수정취소기능 = () =>{
     기분가져오는기능()
 }
 
+const 일기상세삭제기능 = () =>{
+    
+}
 window.onload = () =>{
-    const 회고내용날짜배열 = JSON.parse(localStorage.getItem("회고록")) || []
-    document.getElementById("회고노출영역").innerHTML = 회고내용날짜배열.map((ele, index)=>`
-        <div class= "회고내용날짜행">
-            <div id="회고내용">${ele.회고내용}</div>
-            <div id="회고등록날짜">${ele.회고날짜}</div> 
-        </div>
+    document.getElementById("회고노출영역").innerHTML = 카드내용[카드인덱스]["회고록"].map((ele, index)=>`
+    <div id="회고내용">${ele.회고내용}</div>
+    <div id="회고등록날짜">${ele.회고날짜}</div> 
     `).join("")
 
 }
