@@ -1,6 +1,6 @@
 
 const 사진보관함렌더링 =()=>{
-    document.getElementById("필터일기쓰기버튼").innerHTML=`
+    document.getElementById("필터검색일기쓰기버튼").innerHTML=`
     <select onchange="강아지사진형태생성(event)">
         <option id="기본" value="기본형">기본형</option>
         <option id="가로" value="가로형">가로형</option>
