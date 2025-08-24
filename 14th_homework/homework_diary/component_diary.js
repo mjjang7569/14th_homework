@@ -1,5 +1,8 @@
     // let 단일카드
 // let index
+let 마지막페이지 = Math.ceil((JSON.parse(localStorage.getItem("일기카드들")).length)/12)
+console.log("마지막페이지", 마지막페이지)
+let 시작페이지 = 1
 
 const 단일카드객체생성 = () =>{
     let 오늘의제목 = document.getElementById("오늘의제목").value
@@ -207,7 +210,12 @@ const 필터기능 = (event)=>{
             if(필터된일기[0]){
                let original_index = 필터된일기.map((el)=>카드내용.indexOf(el))
                console.log("original_index", original_index)
-               카드태그생성(original_index)
+               let 마지막페이지 = Math.max(1, Math.ceil(필터된일기.length / 12));
+               console.log("마지막", 마지막페이지)
+               이전페이지기능()
+               다음페이지기능()
+               페이지기능()
+               카드목록그리기기능(original_index)
             }
             else{document.getElementById("카드영역").innerHTML=""}
             break
@@ -217,7 +225,11 @@ const 필터기능 = (event)=>{
             if(필터된일기[0]){
                 let original_index = 필터된일기.map((el)=>카드내용.indexOf(el))
                 console.log("original_index", original_index)
-                카드태그생성(original_index)
+                let 마지막페이지 = Math.max(1, Math.ceil(필터된일기.length / 12));
+                이전페이지기능()
+                다음페이지기능()
+                페이지기능()
+                카드목록그리기기능(original_index)
              }else{document.getElementById("카드영역").innerHTML=""}
             break
         }
@@ -226,7 +238,11 @@ const 필터기능 = (event)=>{
             if(필터된일기[0]){
                 let original_index = 필터된일기.map((el)=>카드내용.indexOf(el))
                 console.log("original_index", original_index)
-                카드태그생성(original_index)
+                let 마지막페이지 = Math.max(1, Math.ceil(필터된일기.length / 12));
+                이전페이지기능()
+                다음페이지기능()
+                페이지기능()
+                카드목록그리기기능(original_index)
              }else{document.getElementById("카드영역").innerHTML=""}
             break
         }
@@ -235,7 +251,11 @@ const 필터기능 = (event)=>{
             if(필터된일기[0]){
                 let original_index = 필터된일기.map((el)=>카드내용.indexOf(el))
                 console.log("original_index", original_index)
-                카드태그생성(original_index)
+                let 마지막페이지 = Math.max(1, Math.ceil(필터된일기.length / 12));
+                이전페이지기능()
+                다음페이지기능()
+                페이지기능()
+                카드목록그리기기능(original_index)
              }else{document.getElementById("카드영역").innerHTML=""}
             break
         }
@@ -245,12 +265,19 @@ const 필터기능 = (event)=>{
             if(필터된일기[0]){
                 let original_index = 필터된일기.map((el)=>카드내용.indexOf(el))
                 console.log("original_index", original_index)
-                카드태그생성(original_index)
+                let 마지막페이지 = Math.max(1, Math.ceil(필터된일기.length / 12));
+                이전페이지기능()
+                다음페이지기능()
+                페이지기능()
+                카드목록그리기기능(original_index)
              }else{document.getElementById("카드영역").innerHTML=""}
             break
         }
         case "전체" : {
             JSON.parse(localStorage.getItem("일기카드들"))
+            이전페이지기능()
+            다음페이지기능()
+            페이지기능()
             카드태그생성()
             return
         }
@@ -280,7 +307,8 @@ const 카드삭제기능 = (event) =>{
     localStorage.removeItem("일기카드들")
     localStorage.setItem("일기카드들", JSON.stringify(남은내용))
     // const 남은객체 = JSON.parse(localStorage.getItem("남은내용"))
-    카드태그생성()
+    // 카드태그생성()
+    카드목록그리기기능(1)
 
 }
 
@@ -371,4 +399,57 @@ const 검색기능=(event)=>{
 const 다크모드기능=(event)=>{
     document.body.classList.toggle("다크모드만들기")
 }
+
+
+
+const 이전페이지기능= () =>{
+    if(시작페이지 >= 6 ){
+        시작페이지-=5
+        페이지기능()
+    }   
+}
+const 다음페이지기능 = () =>{
+    시작페이지+=5
+    if(마지막페이지>=시작페이지){
+        페이지기능()
+    }
+}
+const 페이지기능 = () =>{
+    const arr = new Array(5).fill("mj")
+    const 페이지들 = arr.map((ele, index)=>{
+        const 페이지번호 = index + 시작페이지
+        if(페이지번호 <= 마지막페이지){
+            return ` <button onclick="카드목록그리기기능(${페이지번호})">${페이지번호}</button>`
+        }else{ return ""}
+    }).join("")
+   
+    document.getElementById("페이지영역").innerHTML = 페이지들
+
+}
+
+const 카드목록그리기기능 = (페이지번호 = 마지막페이지) =>{
+    if(typeof(페이지번호) === "number"){
+    let 일기카드배열 = JSON.parse(localStorage.getItem("일기카드들")) ||[]
+    const 카드목록 = 일기카드배열.filter((ele, index) =>{
+        const 건너뛸갯수 = (페이지번호 -1)*12
+        return (건너뛸갯수 < index+1) && (건너뛸갯수+12 >= index +1)
+    })
+    console.log("카드목록", 카드목록)
+    let original_index = 카드목록.map((ele,index)=>{return 일기카드배열.indexOf(ele)})
+    console.log("오리진인덱스", original_index)
+    카드태그생성(original_index)
+    }
+    else{
+        카드태그생성(페이지번호)
+    }
+    
+}
+
 window.일기보관함렌더링=일기보관함렌더링;
+
+window.onload = () =>{
+    페이지기능()
+    카드목록그리기기능(시작페이지)
+    document.getElementById("다음페이지").style.transform = "rotate(180deg)"
+    // console.log("마지막페이지", 마지막페이지)
+}
