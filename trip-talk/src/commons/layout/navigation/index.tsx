@@ -27,6 +27,15 @@ export default function Navigation() {
   const onClickMove = () => {
     router.push("/");
   };
+  const onClickBoard = () =>{
+    router.push("/boards")
+  }
+  const onClickMypage = () =>{
+    router.push("/mypage")
+  }
+  const onClickTransation = () =>{
+    router.push("/transaction")
+  }
   return (
     <>
       <div className={styles.네비게이션}>
@@ -37,9 +46,9 @@ export default function Navigation() {
             width={51.52}
             height={32}
           />
-          <div>트립토크</div>
-          <div>숙박권 구매</div>
-          <div>마이페이지</div>
+          <div onClick={onClickBoard}>트립토크</div>
+          <div onClick={onClickTransation}>숙박권 구매</div>
+          <div onClick={onClickMypage}>마이페이지</div>
         </div>
         <Image
           src={"/images/button_login.png"}
