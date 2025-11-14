@@ -1,36 +1,154 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trip Talk
 
-## Getting Started
+여행 관련 정보를 공유하고 숙소를 등록·조회할 수 있는 플랫폼입니다.
 
-First, run the development server:
+## 📋 프로젝트 소개
+
+Trip Talk은 여행자들이 숙소 정보를 공유하고, 커뮤니티 게시판을 통해 소통할 수 있는 웹 애플리케이션입니다. 포인트 시스템을 통한 결제 기능과 마이페이지를 제공합니다.
+
+## ✨ 주요 기능
+
+### 🏨 숙소 관리
+- 숙소 목록 조회 및 상세 정보 확인
+- 숙소 등록 및 수정
+- 이미지 캐러셀을 통한 숙소 사진 확인
+
+### 💬 게시판
+- 게시글 작성, 수정, 삭제
+- 댓글 작성 및 조회
+- 게시글 검색 및 페이지네이션
+
+### 👤 마이페이지
+- 프로필 관리
+- 비밀번호 변경
+- 포인트 충전 및 사용 내역 조회
+- 거래 내역 확인
+- 북마크 관리
+
+### 💳 포인트 시스템
+- 포인트 충전 (PortOne 결제 연동)
+- 포인트 구매/판매 내역 조회
+- 포인트 사용 내역 관리
+
+### 🌤️ 날씨 API
+- 날씨 정보 조회 기능
+
+## 🛠️ 기술 스택
+
+### Frontend
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: 
+  - Radix UI
+  - Material-UI (MUI)
+  - Ant Design
+
+### Backend & Data
+- **GraphQL**: Apollo Client
+- **Database & Auth**: Supabase
+- **State Management**: Zustand
+
+### Payment
+- **Payment Gateway**: PortOne (구 아임포트)
+
+### 주요 라이브러리
+- `react-hook-form`: 폼 관리
+- `zod`: 스키마 검증
+- `recharts`: 차트 및 데이터 시각화
+- `swiper`: 이미지 캐러셀
+- `react-infinite-scroll-component`: 무한 스크롤
+
+## 📦 설치 및 실행
+
+### 사전 요구사항
+- Node.js 18 이상
+- pnpm (권장) 또는 npm, yarn
+
+### 설치
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 의존성 설치
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 환경 변수 설정
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+프로젝트 루트에 `.env.local` 파일을 생성하고 다음 환경 변수를 설정하세요:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-## Learn More
+# Apollo Client (GraphQL)
+NEXT_PUBLIC_APOLLO_URI=your_graphql_endpoint
 
-To learn more about Next.js, take a look at the following resources:
+# PortOne
+NEXT_PUBLIC_PORTONE_STORE_ID=your_portone_store_id
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 개발 서버 실행
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm dev
+```
 
-## Deploy on Vercel
+브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인하세요.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 프로덕션 빌드
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# 빌드
+pnpm build
+
+# 프로덕션 서버 실행
+pnpm start
+```
+
+## 📁 프로젝트 구조
+
+```
+trip-talk/
+├── src/
+│   ├── app/                    # Next.js App Router 페이지
+│   │   ├── accommodation/      # 숙소 관련 페이지
+│   │   ├── boards/             # 게시판 페이지
+│   │   ├── mypage/             # 마이페이지
+│   │   └── ...
+│   ├── components/             # 재사용 가능한 컴포넌트
+│   │   ├── accommodation_ui/   # 숙소 UI 컴포넌트
+│   │   ├── boards-*/           # 게시판 관련 컴포넌트
+│   │   └── ...
+│   ├── commons/                # 공통 모듈
+│   │   ├── layout/             # 레이아웃 컴포넌트
+│   │   ├── settings/           # 설정 파일 (Apollo 등)
+│   │   └── stores/             # Zustand 스토어
+│   └── data/                   # 정적 데이터
+├── public/                     # 정적 파일
+└── package.json
+```
+
+## 🔧 주요 스크립트
+
+```bash
+# 개발 서버 실행
+pnpm dev
+
+# 프로덕션 빌드
+pnpm build
+
+# 프로덕션 서버 실행
+pnpm start
+
+# 린트 실행
+pnpm lint
+```
+
+## 📝 라이선스
+
+이 프로젝트는 개인 프로젝트입니다.
+
+## 👥 기여
+
+이슈나 개선 사항이 있으면 이슈를 등록해주세요.
