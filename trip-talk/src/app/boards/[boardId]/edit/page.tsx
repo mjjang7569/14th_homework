@@ -1,8 +1,7 @@
 "use client";
 import BoardWrite from "@/components/boards-write";
-import styles from "./styles.module.css";
 import { useParams } from "next/navigation";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 
 const FETCH_BOARD = gql`

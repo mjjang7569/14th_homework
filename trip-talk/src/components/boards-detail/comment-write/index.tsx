@@ -1,23 +1,31 @@
 "use client";
-import React, { cache } from "react";
+import React from "react";
 import { Rate } from "antd";
 
 import useCommentWrite from "./hook";
 import styles from "./styles.module.css";
 import Image from "next/image";
-import { useMutation, useQuery } from "@apollo/client";
-import { FETCH_BOARD_COMMENTS, UPDATE_BOARD_COMMENT } from "./queries";
+import { useMutation } from "@apollo/client";
+import { UPDATE_BOARD_COMMENT } from "./queries";
+import { FETCH_BOARD_COMMENTS } from "../comment-list/queries";
+
+interface CommentElement {
+  _id: string;
+  writer: string;
+  contents: string;
+  rating: number;
+  createdAt?: string;
+}
 
 interface CommentWriteProps {
   isEdit: boolean;
   commentId: string | null;
-  el?: any;
+  el?: CommentElement;
 }
 
 export default function CommentWrite({
   isEdit,
   commentId,
-  el,
 }: CommentWriteProps) {
   const {
     writer,
@@ -33,7 +41,6 @@ export default function CommentWrite({
     isFormValid,
   } = useCommentWrite();
   const [updateBoardComment] = useMutation(UPDATE_BOARD_COMMENT);
-  const { data } = useQuery(FETCH_BOARD_COMMENTS);
   // const onClickCancleEdit = () => {};
   const onClickEdit = async () => {
     try {

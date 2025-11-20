@@ -125,6 +125,14 @@ function ChartTooltipContent({
     indicator?: "line" | "dot" | "dashed";
     nameKey?: string;
     labelKey?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    label?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    labelFormatter?: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    formatter?: any;
   }) {
   const { config } = useChart();
 
@@ -179,7 +187,7 @@ function ChartTooltipContent({
     >
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
-        {payload.map((item, index) => {
+        {payload && Array.isArray(payload) && payload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
           const indicatorColor = color || item.payload.fill || item.color;
@@ -257,9 +265,11 @@ function ChartLegendContent({
   verticalAlign = "bottom",
   nameKey,
 }: React.ComponentProps<"div"> &
-  Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+  Pick<RechartsPrimitive.LegendProps, "verticalAlign"> & {
     hideIcon?: boolean;
     nameKey?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload?: any;
   }) {
   const { config } = useChart();
 
@@ -275,13 +285,13 @@ function ChartLegendContent({
         className,
       )}
     >
-      {payload.map((item) => {
+      {payload.map((item: { dataKey?: string; value?: string | number; [key: string]: unknown }) => {
         const key = `${nameKey || item.dataKey || "value"}`;
         const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
         return (
           <div
-            key={item.value}
+            key={String(item.value ?? item.dataKey ?? key)}
             className={cn(
               "[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3",
             )}
@@ -292,7 +302,7 @@ function ChartLegendContent({
               <div
                 className="h-2 w-2 shrink-0 rounded-[2px]"
                 style={{
-                  backgroundColor: item.color,
+                  backgroundColor: item.color as string,
                 }}
               />
             )}

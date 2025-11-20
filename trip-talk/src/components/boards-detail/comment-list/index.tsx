@@ -4,8 +4,6 @@ import { useQuery } from "@apollo/client";
 import { useParams } from "next/navigation";
 import { FETCH_BOARD_COMMENTS } from "./queries";
 import styles from "./styles.module.css";
-import Image from "next/image";
-import { Rate } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState } from "react";
 import CommentListItem from "../comment-list-item";
@@ -45,7 +43,7 @@ export default function CommentList() {
         next={onNext}
         style={{ overflow: "fit" }}
       >
-        {data?.fetchBoardComments.map((el) => (
+        {data?.fetchBoardComments.map((el: { _id: string; writer: string; contents: string; rating: number; createdAt?: string }) => (
           <CommentListItem key={el._id} commentId={el._id} el={el} />
         ))}
       </InfiniteScroll>

@@ -2,9 +2,21 @@
 
 import { useState } from "react";
 
+interface WeatherData {
+  location: {
+    name: string;
+    country: string;
+  };
+  current: {
+    temperature: number;
+    weather_descriptions: string[];
+    weather_icons: string[];
+  };
+}
+
 export default function OpenAPIs() {
   const [city, setCity] = useState("");
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const apiKey = "c2b5e28d363f175faa152204ab672c1f"; // 내 실제 키
 

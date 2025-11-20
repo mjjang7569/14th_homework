@@ -62,7 +62,7 @@ export default function useBoardWrite() {
             address_detail: data.fetchBoard.addressDetail ?? "",
             url: data.fetchBoard.youtubeUrl ?? "",
             images: data.fetchBoard.images.filter(
-              (url) => url !== "/images/add_image.png"
+              (url: string) => url !== "/images/add_image.png"
             ),
           }
           // { keepValues: true }
@@ -120,13 +120,24 @@ export default function useBoardWrite() {
   const [update_request_api_] = useMutation(UPDATE_BOARD);
   const [uploadFile] = useMutation(UPLOAD_FILE);
 
-  const onClickSubmit = async (data) => {
+  const onClickSubmit = async (data: {
+    writer?: string;
+    title?: string;
+    password?: string;
+    contents?: string;
+    zonecode?: string;
+    address?: string;
+    address_detail?: string;
+    url?: string;
+    images?: string[];
+    [key: string]: unknown;
+  }) => {
     // const imagesAbsolute = (data.images || []).map((img) =>
     //   img.startsWith("http") ? img : `https://storage.googleapis.com/${img}`
     // );
     const imagesToSend = [imageUrl, imageUrl2, imageUrl3]
-      .filter((url) => url && url !== "/images/add_image.png")
-      .map((url) =>
+      .filter((url: string) => url && url !== "/images/add_image.png")
+      .map((url: string) =>
         url.startsWith("https://storage.googleapis.com/")
           ? url.replace("https://storage.googleapis.com/", "")
           : url
@@ -135,10 +146,10 @@ export default function useBoardWrite() {
       const result = await create_request_api_({
         variables: {
           createBoardInput: {
-            writer: data.writer.trim(),
-            password: data.password.trim(),
-            title: data.title.trim(),
-            contents: data.contents.trim(),
+            writer: data.writer?.trim() ?? "",
+            password: data.password?.trim() ?? "",
+            title: data.title?.trim() ?? "",
+            contents: data.contents?.trim() ?? "",
             youtubeUrl: data.url,
             boardAddress: {
               zipcode: data.zonecode,
@@ -158,7 +169,18 @@ export default function useBoardWrite() {
     } finally {
     }
   };
-  const onClickUpdate = async (formData) => {
+  const onClickUpdate = async (formData: {
+    writer?: string;
+    title?: string;
+    password?: string;
+    contents?: string;
+    zonecode?: string;
+    address?: string;
+    address_detail?: string;
+    url?: string;
+    images?: string[];
+    [key: string]: unknown;
+  }) => {
     try {
       const 입력받은비밀번호 = prompt(
         "글을 입력할때 입력하셨던 비밀번호를 입력해주세요"
@@ -178,7 +200,17 @@ export default function useBoardWrite() {
 
       console.log("입력받은 비밀번호 길이:", trimmedPassword.length);
       setValue("password", trimmedPassword);
-      const updateBoardInput: any = {};
+      const updateBoardInput: {
+        title?: string;
+        contents?: string;
+        youtubeUrl?: string;
+        boardAddress?: {
+          zipcode?: string;
+          address?: string;
+          addressDetail?: string;
+        };
+        images?: string[];
+      } = {};
 
       if (formData.title) updateBoardInput.title = formData.title ?? "";
       if (formData.contents)
@@ -247,13 +279,13 @@ export default function useBoardWrite() {
   // };
   const open = useDaumPostcodePopup();
 
-  const handleComplete = (data) => {
+  const handleComplete = (data: { zonecode: string; address: string }) => {
     console.log(data);
     setValue("address", data.address);
     setValue("zonecode", data.zonecode);
   };
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     open({ onComplete: handleComplete });
   };
@@ -263,7 +295,7 @@ export default function useBoardWrite() {
   //   setUrl(유튜브링크);
   // };
   // const images = watch("images") || [];
-  const onChangeFile = async (event, index) => {
+  const onChangeFile = async (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     console.log("파일 선택됨:", event.target.files?.[0]);
     const file = event.target.files?.[0];
     if (!file) {

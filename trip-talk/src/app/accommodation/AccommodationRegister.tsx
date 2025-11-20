@@ -22,7 +22,7 @@ import {
   DialogTitle,
 } from "../../components/accommodation_ui/dialog";
 import { Checkbox } from "../../components/accommodation_ui/checkbox";
-import { ArrowLeft, Upload, X, MapPin, ImagePlus } from "lucide-react";
+import { ArrowLeft, X, MapPin, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AccommodationRegister() {
@@ -117,7 +117,7 @@ export default function AccommodationRegister() {
     }
   };
 
-  const handlePostcodeComplete = (data: any) => {
+  const handlePostcodeComplete = (data: { zonecode: string; address: string }) => {
     setFormData({
       ...formData,
       postcode: data.zonecode,
@@ -141,13 +141,6 @@ export default function AccommodationRegister() {
 
   const removeImage = (index: number) => {
     setImages(images.filter((_: string, i: number) => i !== index));
-  };
-
-  const moveImage = (fromIndex: number, toIndex: number) => {
-    const newImages = [...images];
-    const [movedImage] = newImages.splice(fromIndex, 1);
-    newImages.splice(toIndex, 0, movedImage);
-    setImages(newImages);
   };
 
   const handleSubmit = (e: React.FormEvent) => {

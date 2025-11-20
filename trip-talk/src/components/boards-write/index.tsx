@@ -3,10 +3,28 @@ import styles from "./styles.module.css";
 import Image from "next/image";
 import useBoardWrite from "./hooks";
 
-const 사진경로 = "/images/add_image.png";
 const 아스타기호 = "/images/_.png";
 
-export default function BoardWrite(props) {
+interface BoardWriteProps {
+  수정_등록?: boolean;
+  data?: {
+    fetchBoard?: {
+      _id: string;
+      writer: string;
+      title: string;
+      contents: string;
+      boardAddress?: {
+        zipcode?: string;
+        address?: string;
+        addressDetail?: string;
+      };
+      youtubeUrl?: string;
+      images?: string[];
+    };
+  };
+}
+
+export default function BoardWrite(props: BoardWriteProps) {
   const {
     onClickSubmit,
     onClickUpdate,
@@ -31,32 +49,8 @@ export default function BoardWrite(props) {
     handleSubmit,
     formState,
     onClickCancle,
-    watch,
     isFormValid,
   } = useBoardWrite();
-  // const images = watch("images") || [];
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const showModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
-  // const handleOk = () => {
-  //   setIsModalOpen(false);
-  // };
-
-  // const handleCancel = () => {
-  //   setIsModalOpen(false);
-  // };
-  // const handleClickWrite = async (props) => {
-  //   if (props.수정_등록) {
-  //     await showModal();
-  //     onClickUpdate(data);
-  //   } else {
-  //     onClickSubmit(data);
-  //   }
-  // };
-  const watchFields = watch(["writer", "title", "password", "contents"]);
   console.log("조회결과", props.data?.fetchBoard);
   console.log("이미지 ====", imageUrl, imageUrl2, imageUrl3);
   return (
@@ -234,6 +228,7 @@ export default function BoardWrite(props) {
               <div className={styles.사진첨부버튼}>
                 <img
                   src={imageUrl}
+                  alt="첨부 이미지 1"
                   onClick={() => fileRef.current?.click()}
                   style={{
                     width: "160px",
@@ -243,6 +238,7 @@ export default function BoardWrite(props) {
                 />
                 <img
                   src={imageUrl2}
+                  alt="첨부 이미지 2"
                   onClick={() => fileRef2.current?.click()}
                   style={{
                     width: "160px",
@@ -252,6 +248,7 @@ export default function BoardWrite(props) {
                 />
                 <img
                   src={imageUrl3}
+                  alt="첨부 이미지 3"
                   onClick={() => fileRef3.current?.click()}
                   style={{
                     width: "160px",

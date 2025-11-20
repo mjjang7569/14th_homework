@@ -4,7 +4,6 @@ import { Textarea } from './accommodation_ui/textarea';
 import { Card } from './accommodation_ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from './accommodation_ui/avatar';
 import { Badge } from './accommodation_ui/badge';
-import { Separator } from './accommodation_ui/separator';
 import { MessageCircle, Send, Reply, ChevronDown, ChevronUp } from 'lucide-react';
 import { toast } from 'sonner';
 

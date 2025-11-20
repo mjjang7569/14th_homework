@@ -49,7 +49,7 @@ export default function AccommodationDetail({ id }: AccommodationDetailProps) {
   );
 
   // Transaction 스토어에서 실제 포인트 가져오기
-  const { currentBalance, usePoints } = useTransactionStore();
+  const { currentBalance, usePoints: deductPoints } = useTransactionStore();
 
   const accommodation = accommodations.find((item) => item.id === id);
 
@@ -100,7 +100,7 @@ export default function AccommodationDetail({ id }: AccommodationDetailProps) {
       } else {
         // 포인트가 충분하면 구매 완료
         const description = `${accommodation.name} (${nights}박)`;
-        usePoints(finalPrice, description);
+        deductPoints(finalPrice, description);
         alert("구매가 완료되었습니다!");
         setIsModalOpen(false);
       }

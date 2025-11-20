@@ -49,7 +49,7 @@ const BoardDetail = () => {
       </div>
 
       <div>
-        {data?.fetchBoard.images.map((el, index) => {
+        {data?.fetchBoard.images.map((el: string, index: number) => {
           return (
             <Image
               src={`https://storage.googleapis.com/${el}`}

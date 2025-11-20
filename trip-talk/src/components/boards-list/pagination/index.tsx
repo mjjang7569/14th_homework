@@ -3,9 +3,16 @@ import usePagination from "./hook";
 import Image from "next/image";
 import styles from "./styles.module.css";
 
+interface QueryVariables {
+  search: string;
+  page: number;
+  endDate?: string;
+  startDate?: string;
+}
+
 interface PaginationProps {
   lastPage: number;
-  setQueryVariables: (fn: (prev: any) => any) => void;
+  setQueryVariables: (fn: (prev: QueryVariables) => QueryVariables) => void;
   currentPage: number;
 }
 

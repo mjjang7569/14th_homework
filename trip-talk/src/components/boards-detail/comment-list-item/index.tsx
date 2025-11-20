@@ -11,7 +11,18 @@ import {
   FETCH_BOARD_COMMENTS,
 } from "../comment-write/queries";
 
-export default function CommentListItem(props) {
+interface CommentListItemProps {
+  el: {
+    _id: string;
+    writer: string;
+    contents: string;
+    rating: number;
+    createdAt?: string;
+  };
+  commentId?: string;
+}
+
+export default function CommentListItem(props: CommentListItemProps) {
   const [isEdit, setIsEdit] = useState(false);
   const board_params = useParams();
   const [deleteBoardComment] = useMutation(DELETE_BOARD_COMMENT);
@@ -37,13 +48,13 @@ export default function CommentListItem(props) {
           password: password,
           boardCommentId: props.el._id,
         },
-        update(cache, { data }) {
+        update(cache) {
           // 캐시에서 해당 댓글을 제거
           cache.modify({
             fields: {
               fetchBoardComments(existingComments = [], { readField }) {
                 return existingComments.filter(
-                  (commentRef: any) =>
+                  (commentRef: { _id?: string }) =>
                     props.el._id !== readField("_id", commentRef)
                 );
               },
@@ -59,8 +70,12 @@ export default function CommentListItem(props) {
         awaitRefetchQueries: true, // refetch가 완료될 때까지 대기
       });
       alert("댓글이 삭제되었습니다.");
-    } catch (error: any) {
-      alert(error.message || "댓글 삭제 중 오류가 발생했습니다.");
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "댓글 삭제 중 오류가 발생했습니다."
+      );
     }
   };
 
